@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Safari {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String
+  duration    Int
+  price       Float
+  imageUrl    String
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  itineraries Itinerary[]
+  inquiries   Inquiry[]
+}
+
+model Itinerary {
+  id        String   @id @default(cuid())
+  safariId  String
+  day       Int
+  title     String
+  content   String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  safari Safari @relation(fields: [safariId], references: [id], onDelete: Cascade)
+}
+
+model Blog {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  excerpt   String
+  content   String
+  imageUrl  String
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Inquiry {
+  id        String   @id @default(cuid())
+  firstName String   @default("")
+  lastName  String   @default("")
+  email     String
+  phone     String   @default("")
+  groupSize Int      @default(1)
+  message   String
+  safariSlug String
+  createdAt DateTime @default(now())
+
+  safari Safari @relation(fields: [safariSlug], references: [slug])
+}
+
+model FAQ {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  category  String?
+  order     Int      @default(0)
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model About {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Destination {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  description String
+  imageUrl  String
+  country   String
+  featured  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

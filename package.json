@@ -1,0 +1,51 @@
+{
+  "name": "savannah-sun",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:push:prod": "cross-env DATABASE_URL_DEV=\"$DATABASE_URL\" prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:prod": "cross-env DATABASE_URL_DEV=\"$DATABASE_URL\" prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:seed:prod": "cross-env DATABASE_URL_DEV=\"$DATABASE_URL\" tsx prisma/seed.ts",
+    "admin:create": "tsx scripts/create-admin.ts",
+    "db:studio": "prisma studio",
+    "db:studio:prod": "cross-env DATABASE_URL_DEV=\"$DATABASE_URL\" prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "@tiptap/extension-color": "^3.26.1",
+    "@tiptap/extension-highlight": "^3.26.1",
+    "@tiptap/extension-link": "^3.26.1",
+    "@tiptap/extension-text-align": "^3.26.1",
+    "@tiptap/extension-text-style": "^3.26.1",
+    "@tiptap/react": "^3.26.1",
+    "@tiptap/starter-kit": "^3.26.1",
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^3.0.3",
+    "lucide-react": "^0.460.0",
+    "next": "^15.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^15.0.0",
+    "postcss": "^8.4.0",
+    "prisma": "^5.20.0",
+    "tailwindcss": "^3.4.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.0.0"
+  }
+}

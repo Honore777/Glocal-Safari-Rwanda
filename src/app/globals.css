@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+}
+
+body {
+  @apply text-charcoal;
+  /* Savannah sun backdrop: a warm sun glow at the top melting into golden sand */
+  background-color: #F6E7C5;
+  background-image:
+    radial-gradient(120% 80% at 50% -10%, rgba(255, 210, 125, 0.85) 0%, rgba(255, 210, 125, 0) 55%),
+    radial-gradient(90% 60% at 85% 10%, rgba(232, 130, 30, 0.25) 0%, rgba(232, 130, 30, 0) 50%),
+    linear-gradient(180deg, #FBEACB 0%, #F4DDAF 45%, #EFD3A0 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+.rich-text-content h2 {
+  @apply font-serif text-3xl text-safari-green mt-8 mb-3 leading-tight;
+}
+
+.rich-text-content h3 {
+  @apply font-serif text-2xl text-golden-dark mt-6 mb-2 leading-tight;
+}
+
+.rich-text-content p {
+  @apply mb-4;
+}
+
+.rich-text-content strong {
+  @apply font-semibold text-safari-green;
+}
+
+.rich-text-content em {
+  @apply text-golden-dark;
+}
+
+.rich-text-content mark {
+  @apply rounded-md bg-sunset-glow/45 px-1.5 py-0.5 text-charcoal;
+}
+
+.rich-text-content ul {
+  @apply list-disc pl-6 mb-4 space-y-2;
+}
+
+.rich-text-content ol {
+  @apply list-decimal pl-6 mb-4 space-y-2;
+}
+
+.rich-text-content blockquote {
+  @apply border-l-4 border-golden-mid bg-golden-light/20 px-5 py-3 italic text-charcoal/75 rounded-r-xl my-5;
+}
+
+.rich-text-content a {
+  @apply text-golden-dark underline underline-offset-4 hover:text-safari-green;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

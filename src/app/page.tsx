@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { ArrowRight, Calendar, MapPin, Camera, Tent, Compass, Star } from "lucide-react";
 import HeroCarousel from "@/components/HeroCarousel";
 import { siteConfig } from "@/lib/site";
+import { prisma } from "@/lib/prisma";
 
 export const revalidate = 3600;
 
@@ -33,37 +34,13 @@ const categories = [
   },
 ];
 
-const featured = [
-  {
-    img: "/images/golden-elephant.jpeg",
-    days: 4,
-    location: "Akagera, Rwanda",
-    title: "Big Five Game Drive",
-    desc: "Encounter elephants, lions and more across the golden plains of Akagera.",
-    price: 159,
-    slug: "big-five-game-drive",
-  },
-  {
-    img: "/images/bonding-elephants.jpeg",
-    days: 3,
-    location: "Volcanoes, Rwanda",
-    title: "Gorilla & Wildlife Trek",
-    desc: "Trek to mountain gorillas and witness intimate moments in the wild.",
-    price: 189,
-    slug: "gorilla-wildlife-trek",
-  },
-  {
-    img: "/images/golden-elephant.jpeg",
-    days: 5,
-    location: "Nyungwe, Rwanda",
-    title: "Savannah Sunset Expedition",
-    desc: "An exclusive journey chasing the sun across Rwanda's untamed beauty.",
-    price: 139,
-    slug: "savannah-sunset-expedition",
-  },
-];
+export default async function HomePage() {
+  const featuredSafaris = await prisma.safari.findMany({
+    where: { featured: true },
+    orderBy: { createdAt: "desc" },
+    take: 3,
+  });
 
-export default function HomePage() {
   return (
     <div>
       {/* Hero */}
@@ -125,50 +102,61 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featured.map((safari) => (
+          {featuredSafaris.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredSafaris.map((safari) => (
+                <Link
+                  key={safari.slug}
+                  href={`/safaris/${safari.slug}`}
+                  className="group bg-cream rounded-2xl overflow-hidden shadow-lg hover:shadow-gold-lg transition-all duration-300 hover:-translate-y-2"
+                >
+                  <div className="aspect-[4/3] relative overflow-hidden">
+                    <Image
+                      src={safari.imageUrl}
+                      alt={safari.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 to-transparent" />
+                    <div className="absolute top-4 right-4 bg-golden-gradient text-charcoal font-bold text-sm px-3 py-1 rounded-full shadow-gold">
+                      ${safari.price}/day
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-4 text-sm text-charcoal-light/70 mb-3">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-4 h-4 text-golden-dark" />
+                        {safari.duration} Days
+                      </span>
+                    </div>
+                    <h3 className="font-serif text-2xl text-safari-green mb-2 group-hover:text-golden-dark transition-colors">
+                      {safari.title}
+                    </h3>
+                    <p className="font-sans text-charcoal-light/70 text-sm mb-4 leading-relaxed">
+                      {safari.description}
+                    </p>
+                    <span className="inline-flex items-center gap-2 text-golden-dark font-semibold group-hover:gap-3 transition-all">
+                      View Details
+                      <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="font-sans text-charcoal-light/70 text-lg">
+                No featured safaris yet. Mark safaris as featured in the admin panel.
+              </p>
               <Link
-                key={safari.slug}
-                href={`/safaris/${safari.slug}`}
-                className="group bg-cream rounded-2xl overflow-hidden shadow-lg hover:shadow-gold-lg transition-all duration-300 hover:-translate-y-2"
+                href="/safaris"
+                className="inline-flex items-center gap-2 text-golden-dark font-semibold mt-4 hover:gap-3 transition-all"
               >
-                <div className="aspect-[4/3] relative overflow-hidden">
-                  <Image
-                    src={safari.img}
-                    alt={safari.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 to-transparent" />
-                  <div className="absolute top-4 right-4 bg-golden-gradient text-charcoal font-bold text-sm px-3 py-1 rounded-full shadow-gold">
-                    ${safari.price}/day
-                  </div>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center gap-4 text-sm text-charcoal-light/70 mb-3">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4 text-golden-dark" />
-                      {safari.days} Days
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4 text-golden-dark" />
-                      {safari.location}
-                    </span>
-                  </div>
-                  <h3 className="font-serif text-2xl text-safari-green mb-2 group-hover:text-golden-dark transition-colors">
-                    {safari.title}
-                  </h3>
-                  <p className="font-sans text-charcoal-light/70 text-sm mb-4 leading-relaxed">
-                    {safari.desc}
-                  </p>
-                  <span className="inline-flex items-center gap-2 text-golden-dark font-semibold group-hover:gap-3 transition-all">
-                    View Details
-                    <ArrowRight className="w-4 h-4" />
-                  </span>
-                </div>
+                View All Safaris
+                <ArrowRight className="w-5 h-5" />
               </Link>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
       </section>
 

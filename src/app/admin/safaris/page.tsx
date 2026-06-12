@@ -15,6 +15,7 @@ export default async function SafarisAdminPage() {
     await prisma.safari.delete({ where: { id } });
     revalidatePath("/admin/safaris");
     revalidatePath("/safaris");
+    revalidatePath("/");
   }
 
   return (

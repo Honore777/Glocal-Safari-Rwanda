@@ -39,3 +39,6 @@ next-env.d.ts
 
 # uploaded images (use cloud storage in production)
 /public/images/uploads/
+
+.vercel
+.env*

@@ -54,6 +54,7 @@ export async function createSafari(formData: FormData) {
 
   revalidatePath("/admin/safaris");
   revalidatePath("/safaris");
+  revalidatePath("/");
   redirect("/admin/safaris");
 }
 
@@ -119,5 +120,6 @@ export async function updateSafari(formData: FormData) {
   revalidatePath("/admin/safaris");
   revalidatePath("/safaris");
   revalidatePath(`/safaris/${slug}`);
+  revalidatePath("/");
   redirect("/admin/safaris");
 }

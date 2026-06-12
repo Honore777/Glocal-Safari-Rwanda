@@ -54,7 +54,7 @@ export async function uploadImage(
   const filename = `${Date.now()}-${base || "image"}.${ext}`;
 
   const { data, error } = await supabase.storage
-    .from("safari-images")
+    .from("safari_images")
     .upload(filename, buffer, {
       contentType: file.type,
       upsert: false,
@@ -65,7 +65,7 @@ export async function uploadImage(
   }
 
   const { data: urlData } = supabase.storage
-    .from("safari-images")
+    .from("safari_images")
     .getPublicUrl(data.path);
 
   return { url: urlData.publicUrl };
